@@ -50,6 +50,7 @@ function onTrigger(player, npc)
     local HourOfTheDay = VanadielHour()
 
     if ((hatstatus == 1 or player:getCharVar("QuestHatInHand_var2") == 1) and testflag(tonumber(player:getCharVar("QuestHatInHand_var")), 4) == false) then
+        player:messageSpecial(ID.text.YOU_SHOW_OFF_THE, 0, tpz.ki.NEW_MODEL_HAT)
         player:startEvent(56) -- Show Off Hat
     elseif ((SayFlowers == QUEST_ACCEPTED or SayFlowers == QUEST_COMPLETED) and FlowerProgress == 2) then
         player:startEvent(519)

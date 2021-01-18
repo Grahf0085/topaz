@@ -40,6 +40,7 @@ function onTrigger(player, npc)
         (hatInHand == QUEST_ACCEPTED or player:getCharVar("QuestHatInHand_var2") == 1) and
         not testflag(player:getCharVar("QuestHatInHand_var"), 2)
     then
+        player:messageSpecial(ID.text.YOU_SHOW_OFF_THE, 0, tpz.ki.NEW_MODEL_HAT)
         player:startEvent(59) -- Show Off Hat
     elseif wildCard == QUEST_COMPLETED then
         player:startEvent(783)

@@ -63,6 +63,7 @@ function onTrigger(player, npc)
         player:getCharVar("QuestHatInHand_var2") == 1) and
         bit.band(player:getCharVar("QuestHatInHand_var"), bit.lshift(1, 5)) == 0
     then
+        player:messageSpecial(ID.text.YOU_SHOW_OFF_THE, 0, tpz.ki.NEW_MODEL_HAT)
         player:startEvent(55) -- Show Off Hat
 
     -- Early Bird Catches the Bookworm

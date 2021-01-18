@@ -20,6 +20,7 @@ function onTrigger(player, npc)
     if ((hatstatus == 1  or player:getCharVar("QuestHatInHand_var2") == 1) and player:getCharVar("QuestHatInHand_var") < 127) then
         player:startEvent(53) -- Show Off Hat (She does not buy one)
     elseif ((hatstatus == 1 or player:getCharVar("QuestHatInHand_var2") == 1)  and player:getCharVar("QuestHatInHand_var") == 127) then
+        player:messageSpecial(ID.text.YOU_SHOW_OFF_THE, 0, tpz.ki.NEW_MODEL_HAT)
         player:startEvent(61) -- Show Off Hat (She buys one)
     else
         player:startEvent(43) -- Standard Conversation
