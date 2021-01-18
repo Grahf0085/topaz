@@ -11,6 +11,10 @@ require("scripts/globals/quests")
 -----------------------------------
 
 function onTrade(player, npc, trade)
+    if (trade:getItemCount() == 1 and trade:getGil() == 0 and trade:hasItemQty(543, 1) == true and player:getCharVar("irondoor") == 0) then -- trade rusty key to enter room
+        player:startEvent(41)
+        player:setCharVar("irondoor", 1)    
+    end
 end
 
 function onTrigger(player, npc)
@@ -21,6 +25,9 @@ function onTrigger(player, npc)
         -- no further action
     elseif efao == QUEST_ACCEPTED and efaoStat == 2 then
         player:startEvent(66)
+    elseif (player:getCharVar("irondoor") == 1) then -- to exit room behind iron door
+        player:startEvent(42)
+        player:setCharVar("irondoor", 0)
     end
 end
 
