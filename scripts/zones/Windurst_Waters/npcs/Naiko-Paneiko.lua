@@ -1,7 +1,7 @@
 -----------------------------------
 -- Area: Windurst Waters
 --  NPC: Naiko-Paneiko
--- Involved In Quest: Making Headlines, Riding on the Clouds
+-- Involved In Quest: Making Headlines, Scooped!, Riding on the Clouds
 -- !pos -246 -5 -308 238
 -----------------------------------
 local ID = require("scripts/zones/Windurst_Waters/IDs")
@@ -12,7 +12,7 @@ require("scripts/globals/quests")
 -----------------------------------
 
 function onTrade(player, npc, trade)
-
+    scoopedstatus = player:getQuestStatus(WINDURST, tpz.quest.id.windurst.SCOOPED)
     if (player:getQuestStatus(JEUNO, tpz.quest.id.jeuno.RIDING_ON_THE_CLOUDS) == QUEST_ACCEPTED and player:getCharVar("ridingOnTheClouds_4") == 2) then
         if (trade:hasItemQty(1127, 1) and trade:getItemCount() == 1) then -- Trade Kindred seal
             player:setCharVar("ridingOnTheClouds_4", 0)
@@ -20,8 +20,9 @@ function onTrade(player, npc, trade)
             player:addKeyItem(tpz.ki.SPIRITED_STONE)
             player:messageSpecial(ID.text.KEYITEM_OBTAINED, tpz.ki.SPIRITED_STONE)
         end
+    elseif (scoopedstatus == 1 and trade:hasItemQty(580, 1) == true and trade:getGil() == 0 and trade:getItemCount() == 1) then -- trade bronze box
+        player:startEvent(680)
     end
-
 end
 
 function onTrigger(player, npc)
@@ -31,6 +32,7 @@ function onTrigger(player, npc)
     end
 
     MakingHeadlines = player:getQuestStatus(WINDURST, tpz.quest.id.windurst.MAKING_HEADLINES)
+    scoopedstatus = player:getQuestStatus(WINDURST, tpz.quest.id.windurst.SCOOPED)
 
     if (MakingHeadlines == 0) then
         player:startEvent(665) -- Quest Start
@@ -56,14 +58,19 @@ function onTrigger(player, npc)
             if (rand == 1) then
                 player:startEvent(674) -- Quest finish 1
             elseif (scoop == 4 and door == 1) then
-                player:startEvent(670)    -- Quest finish 2
+                player:startEvent(670)    -- Quest finish 2 
             end
         end
+    elseif (scoopedstatus == 1 or player:getCharVar("QuestScooped_var") == 1) then
+        player:startEvent(677) -- Quest Scooped! objective reminder
+    elseif (MakingHeadlines == 2 and scoopedstatus == 0 and player:needToZone() == false and player:getCharVar("QuestMakingHeadlines_var") == 0) then
+        player:startEvent(676) -- Quest Scooped! offered
     else
         player:startEvent(663) -- Standard conversation
     end
 
 end
+
 
 function onEventUpdate(player, csid, option)
 end
@@ -83,6 +90,14 @@ function onEventFinish(player, csid, option)
         player:setCharVar("QuestMakingHeadlines_var", 0)
         player:addFame(WINDURST, 30)
         player:completeQuest(WINDURST, tpz.quest.id.windurst.MAKING_HEADLINES)
+    elseif (csid == 676) then
+        player:addQuest(WINDURST, tpz.quest.id.windurst.SCOOPED)
+    elseif (csid == 680) then
+        player:tradeComplete()
+        player:completeQuest(WINDURST, tpz.quest.id.windurst.SCOOPED)
+        player:addFame(WINDURST, 40)
+        player:addGil(GIL_RATE*1500)
+        player:messageSpecial(ID.text.GIL_OBTAINED, GIL_RATE*1500)
     end
 
 end
