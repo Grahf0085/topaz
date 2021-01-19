@@ -27,6 +27,10 @@ end
 function onTrigger(player, npc)
     if (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.MAKING_THE_GRADE) == QUEST_ACCEPTED) then
         player:startEvent(451) -- During Making the GRADE
+    elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE) == QUEST_ACCEPTED and player:getCharVar("QuestSleepLie_var") > 5) then
+        player: startEvent(488) -- During Let Sleeping Does Lie
+    elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE) == QUEST_ACCEPTED and player:getCharVar("QuestSleepLie_var") == 5) then
+        player: startEvent(506) -- Let Sleeping Dogs Lie after choosing automation butlet did it
     else
         player:startEvent(428) -- Standard conversation
     end

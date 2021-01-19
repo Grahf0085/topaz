@@ -44,6 +44,8 @@ function onTrigger(player, npc)
     elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.CLASS_REUNION) == QUEST_ACCEPTED and player:getCharVar("ClassReunionProgress") >= 3 and player:getCharVar("ClassReunion_TalkedToFupepe") ~= 1) then
         player:startEvent(817) -- he tells you about Uran-Mafran
     -------------------------------------------------------
+    elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE) == QUEST_ACCEPTED) then
+        player: startEvent(493) -- During Let Sleeping Does Lie
     else
         player:startEvent(423) -- Standard Conversation
     end

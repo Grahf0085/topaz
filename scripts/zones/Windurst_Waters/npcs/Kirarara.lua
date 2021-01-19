@@ -16,6 +16,8 @@ end
 function onTrigger(player, npc)
     if (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.MAKING_THE_GRADE) == QUEST_ACCEPTED) then
         player:startEvent(447) -- During Making the GRADE
+    elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE) == QUEST_ACCEPTED) then
+        player: startEvent(485) -- During Let Sleeping Does Lie
     else
         player:startEvent(425)  -- Standard conversation
     end

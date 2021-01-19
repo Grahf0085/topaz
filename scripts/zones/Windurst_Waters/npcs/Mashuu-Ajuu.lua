@@ -3,6 +3,7 @@
 --  NPC: Mashuu-Ajuu
 -- Starts and Finished Quest: Reap What You Sow
 -- Involved in Quest: Making the Grade
+-- Starts the Quest: Let Sleeping Dogs Lie
 -- !pos 129 -6 167 238
 -----------------------------------
 local ID = require("scripts/zones/Windurst_Waters/IDs")
@@ -25,9 +26,14 @@ end
 
 function onTrigger(player, npc)
     local reapstatus = player:getQuestStatus(WINDURST, tpz.quest.id.windurst.REAP_WHAT_YOU_SOW)
+    local sleepingStatus = player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE)
     if (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.MAKING_THE_GRADE) == QUEST_ACCEPTED) then
         player:startEvent(448) -- During Making the GRADE
-    elseif (reapstatus == QUEST_AVAILABLE) then
+    elseif (sleepingStatus == QUEST_AVAILABLE or sleepingStatus == QUEST_ACCEPTED and player:getFameLevel(WINDURST) >= 4 and reapstatus ~= 1 and player:getCharVar("QuestSleepLie_var") > 5) then 
+        player:startEvent(483) -- Let Sleeping Dogs Lie START
+    elseif (sleepingStatus == QUEST_ACCEPTED and player:getCharVar("QuestSleepLie_var") == 5) then
+        player:startEvent(501)  -- Let Sleeping Dogs Lie after choosing automation butlet did it
+    elseif (reapstatus == QUEST_AVAILABLE and sleepingStatus ~= QUEST_ACCEPTED) then
         rand = math.random(1, 2)
         if (rand == 1) then
             player:startEvent(463, 0, 4565, 572)                 -- REAP WHAT YOU SOW + HERB SEEDS: QUEST START
@@ -41,7 +47,7 @@ function onTrigger(player, npc)
         else
             player:startEvent(476)                          -- Another Conversation During Quest
         end
-    elseif (reapstatus == QUEST_COMPLETED and player:needToZone()) then
+    elseif (reapstatus == QUEST_COMPLETED and player:needToZone() and sleepingStatus == QUEST_AVAILAVBLE) then
         player:startEvent(478)                              -- REAP WHAT YOU SOW: After Quest
     elseif (reapstatus == QUEST_COMPLETED and player:needToZone() == false and player:getCharVar("QuestReapSow_var") == 0) then
         rand = math.random(1, 2)
@@ -66,7 +72,9 @@ function onEventUpdate(player, csid, option)
 end
 
 function onEventFinish(player, csid, option)
-    if (((csid == 463 and option == 3) or (csid == 479 and option == 3)) and player:getFreeSlotsCount() == 0) then  -- REAP WHAT YOU SOW + HERB SEEDS: QUEST START - ACCEPTED - INVENTORY FULL
+    if (csid == 483) then -- let sleeping dogs lie accepted
+    player:addQuest(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE)
+    elseif (((csid == 463 and option == 3) or (csid == 479 and option == 3)) and player:getFreeSlotsCount() == 0) then  -- REAP WHAT YOU SOW + HERB SEEDS: QUEST START - ACCEPTED - INVENTORY FULL
         player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, 572)
     elseif (csid == 463 and option == 3) then                      -- REAP WHAT YOU SOW + HERB SEEDS: QUEST START - ACCEPTED
         player:addQuest(WINDURST, tpz.quest.id.windurst.REAP_WHAT_YOU_SOW)

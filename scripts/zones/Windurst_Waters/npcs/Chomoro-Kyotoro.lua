@@ -25,6 +25,10 @@ function onTrigger(player, npc)
         else
             player:startEvent(461)
         end
+    elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE) == QUEST_ACCEPTED and player:getCharVar("QuestSleepLie_var") > 5) then
+        player: startEvent(489) -- During Let Sleeping Does Lie
+    elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE) == QUEST_ACCEPTED and player:getCharVar("QuestSleepLie_var") == 5) then
+        player: startEvent(507) -- Let Sleeping Dogs Lie after choosing automation butlet did it
     else
         player:startEvent(432)
     end

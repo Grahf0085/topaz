@@ -101,6 +101,8 @@ function onTrigger(player, npc)
         player:startEvent(439, 0, 847, 4368) -- Quest Reminder
     elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.MAKING_THE_GRADE) == QUEST_ACCEPTED) then
         player:startEvent(444) -- During Making the GRADE
+    elseif (player:getQuestStatus(WINDURST, tpz.quest.id.windurst.LET_SLEEPING_DOGS_LIE) == QUEST_ACCEPTED) then
+        player: startEvent(491) -- During Let Sleeping Does Lie
     else   --  Will run through these iffame is not high enough for other quests
         rand = math.random(1, 2)
         if (rand == 1) then
